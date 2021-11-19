@@ -13,11 +13,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           primaryColor: Colors.green[900],
-          accentColor: Colors.blueAccent[700],
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.blueAccent[700],
             textTheme: ButtonTextTheme.primary,
-          )),
+          ),
+          colorScheme: ColorScheme.fromSwatch()
+              .copyWith(secondary: Colors.blueAccent[700])),
       home: const Dashboard(),
     );
   }
@@ -30,7 +31,7 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
@@ -44,7 +45,7 @@ class Dashboard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               height: 100,
               width: 150,
               color: Theme.of(context).primaryColor,
