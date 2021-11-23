@@ -1,8 +1,13 @@
+import 'package:bytebank/database/app_database.dart';
+import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
+  save(Contact(3, 'alex', 1000)).then((id) {
+    findALl().then((contacts) => debugPrint(contacts.toString()));
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +25,7 @@ class MyApp extends StatelessWidget {
           ),
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(secondary: Colors.blueAccent[700])),
-      home: Dashboard(),
+      home: const Dashboard(),
     );
   }
 }

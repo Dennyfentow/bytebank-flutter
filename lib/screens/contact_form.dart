@@ -2,6 +2,8 @@ import 'package:bytebank/models/contact.dart';
 import 'package:flutter/material.dart';
 
 class ContactForm extends StatefulWidget {
+  const ContactForm({Key? key}) : super(key: key);
+
   @override
   State<ContactForm> createState() => _ContactFormState();
 }
@@ -16,7 +18,7 @@ class _ContactFormState extends State<ContactForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('New contact'),
+          title: const Text('New contact'),
           backgroundColor: Theme.of(context).primaryColor,
         ),
         body: Padding(
@@ -56,7 +58,8 @@ class _ContactFormState extends State<ContactForm> {
                       final int? accountNumber =
                           int.tryParse(_accountNumberController.text);
                       if (name != null && accountNumber != null) {
-                        final Contact newContact = Contact(name, accountNumber);
+                        final Contact newContact =
+                            Contact(0, name, accountNumber);
                         Navigator.pop(context, newContact);
                       }
                     },

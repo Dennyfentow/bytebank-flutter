@@ -2,11 +2,13 @@ import 'package:bytebank/screens/contact_form.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatelessWidget {
+  const ContactsList({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Contacts'),
+        title: const Text('Contacts'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: ListView(
@@ -24,7 +26,8 @@ class ContactsList extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ContactForm()))
+              .push(
+                  MaterialPageRoute(builder: (context) => const ContactForm()))
               .then((newContact) => debugPrint('$newContact'));
         },
         child: const Icon(Icons.add),
