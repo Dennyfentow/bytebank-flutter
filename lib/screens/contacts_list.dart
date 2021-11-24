@@ -1,10 +1,11 @@
-import 'package:bytebank/database/app_database.dart';
+import 'package:bytebank/database/DAO/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact_form.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatefulWidget {
-  const ContactsList({Key? key}) : super(key: key);
+  ContactsList({Key? key}) : super(key: key);
+  final ContactDao _contactDao = ContactDao();
 
   @override
   State<ContactsList> createState() => _ContactsListState();
@@ -20,7 +21,7 @@ class _ContactsListState extends State<ContactsList> {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: const [], // lista vazia em caso de não haver nada
-        future: findAll(),
+        future: widget._contactDao.findAll(),
         builder: (context, snapshot) {
           final List<Contact>? contacts = snapshot.data;
 
