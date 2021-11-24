@@ -3,9 +3,14 @@ import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact_form.dart';
 import 'package:flutter/material.dart';
 
-class ContactsList extends StatelessWidget {
+class ContactsList extends StatefulWidget {
   const ContactsList({Key? key}) : super(key: key);
 
+  @override
+  State<ContactsList> createState() => _ContactsListState();
+}
+
+class _ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,8 +20,7 @@ class ContactsList extends StatelessWidget {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: const [], // lista vazia em caso de não haver nada
-        future: Future.delayed(const Duration(seconds: 1))
-            .then((value) => findAll()),
+        future: findAll(),
         builder: (context, snapshot) {
           final List<Contact>? contacts = snapshot.data;
 
@@ -59,7 +63,7 @@ class ContactsList extends StatelessWidget {
           Navigator.of(context)
               .push(
                   MaterialPageRoute(builder: (context) => const ContactForm()))
-              .then((newContact) => debugPrint('$newContact'));
+              .then((value) => setState(() {}));
         },
         child: const Icon(Icons.add),
       ),

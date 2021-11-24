@@ -14,6 +14,7 @@ Future<Database> createDatabase() {
             'account_number INTEGER)');
       },
       version: 1,
+      // onDowngrade: onDatabaseDowngradeDelete,
       // onUpgrade: (db, oldVersion, newVersion) {
       //   // run sql code for upgrade
       // }
