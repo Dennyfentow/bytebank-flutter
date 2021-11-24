@@ -1,9 +1,6 @@
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
-import 'database/app_database.dart';
-import 'models/contact.dart';
-
 void main() {
   runApp(const MyApp());
   // Contact daniel = Contact(1, 'Daniel', 4000);
