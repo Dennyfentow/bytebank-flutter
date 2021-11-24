@@ -15,11 +15,39 @@ class ContactDao {
 
   Future<int> save(Contact contact) async {
     final Database db = await getDatabase();
-    Map<String, dynamic> contactMap = toMap(contact);
+    Map<String, dynamic> contactMap = _toMap(contact);
     return db.insert(_tableName, contactMap);
   }
 
-  Map<String, dynamic> toMap(Contact contact) {
+  Future<List<Contact>> findAll() async {
+    Database db = await getDatabase();
+    final List<Map<String, Object?>> result = await db.query(_tableName);
+    List<Contact> contacts = _toList(result);
+    return contacts;
+  }
+
+  Future<int> update(Contact contact) async {
+    final Database db = await getDatabase();
+    final Map<String, dynamic> contactMap = _toMap(contact);
+    return db.update(
+      _tableName,
+      contactMap,
+      where: ContactDao._id + ' = ?',
+      whereArgs: [contact.id],
+    );
+  }
+
+  Future<int> delete(int id) async {
+    final Database db = await getDatabase();
+    return db.delete(
+      _tableName,
+      where: ContactDao._id + ' = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // UTILS
+  Map<String, dynamic> _toMap(Contact contact) {
     final Map<String, dynamic> contactMap = {};
     // Assim, o SQLite fica responsável por incrementar colunas do tipo Int
     // contactMap['id'] = contact.id;
@@ -28,14 +56,7 @@ class ContactDao {
     return contactMap;
   }
 
-  Future<List<Contact>> findAll() async {
-    Database db = await getDatabase();
-    final List<Map<String, Object?>> result = await db.query(_tableName);
-    List<Contact> contacts = toList(result);
-    return contacts;
-  }
-
-  List<Contact> toList(List<Map<String, Object?>> result) {
+  List<Contact> _toList(List<Map<String, Object?>> result) {
     final List<Contact> contacts = [];
 
     for (Map<String, dynamic> row in result) {
