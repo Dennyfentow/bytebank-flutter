@@ -1,13 +1,18 @@
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
+import 'database/app_database.dart';
+import 'models/contact.dart';
+
 void main() {
   runApp(const MyApp());
+  // Contact daniel = Contact(1, 'Daniel', 4000);
+  // debugPrint('$daniel');
+  // save(daniel).then((value) => findAll()).then((lista) => debugPrint('$lista'));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
