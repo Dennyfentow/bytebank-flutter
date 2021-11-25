@@ -1,12 +1,11 @@
+import 'package:bytebank/http/web_client.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bytebank/screens/dashboard.dart';
 
 void main() {
   runApp(const MyApp());
-  // Contact daniel = Contact(1, 'Daniel', 4000);
-  // debugPrint('$daniel');
-  // save(daniel).then((value) => findAll()).then((lista) => debugPrint('$lista'));
+  findAll();
 }
 
 class MyApp extends StatelessWidget {
