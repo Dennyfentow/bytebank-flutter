@@ -59,14 +59,15 @@ class Dashboard extends StatelessWidget {
 
 class _FeatureItem extends StatelessWidget {
   final String name;
-  final IconData icon;
-  final Function onClick;
+  final IconData? icon;
+  final Function? onClick;
 
   _FeatureItem(
     this.name,
     this.icon, {
     required this.onClick,
-  });
+  })  : assert(icon != null),
+        assert(onClick != null);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,7 @@ class _FeatureItem extends StatelessWidget {
       child: Material(
         color: Theme.of(context).primaryColor,
         child: InkWell(
-          onTap: () => onClick(),
+          onTap: () => onClick!(),
           child: Container(
             padding: const EdgeInsets.all(8.0),
             // height: 100,
