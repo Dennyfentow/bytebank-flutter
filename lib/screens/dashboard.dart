@@ -52,7 +52,7 @@ class Dashboard extends StatelessWidget {
 
   _showTransactionsList(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => TransactionsList(),
+      builder: (context) => const TransactionsList(),
     ));
   }
 }

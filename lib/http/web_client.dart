@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
@@ -27,12 +25,13 @@ class LoggingInterceptor implements InterceptorContract {
   }
 }
 
-void findAll() async {
+Future<List<Transaction>> findAll() async {
   Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
   final Response response = await client
       .get(Uri.parse('https://1820-170-82-181-76.ngrok.io/transactions'));
 
-  List<Transaction> result = Transaction.fromJSON(response.body);
-  debugPrint(result.toString());
+  List<Transaction> transactions = Transaction.fromListJSON(response.body);
+  debugPrint(transactions.toString());
+  return transactions;
 }

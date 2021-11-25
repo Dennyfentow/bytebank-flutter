@@ -1,3 +1,4 @@
+import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/database/DAO/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact_form.dart';
@@ -29,21 +30,13 @@ class _ContactsListState extends State<ContactsList> {
             case ConnectionState.none:
               break;
             case ConnectionState.waiting:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(),
-                  ],
-                ),
-              );
+              return const Progress();
             case ConnectionState.active:
               break;
             case ConnectionState.done:
-              // em caso de nulo
               return ListView.builder(
                 itemBuilder: (context, index) {
+                  // em caso de nulo
                   final Contact? contact =
                       contacts != null ? contacts[index] : null;
                   if (contact != null) {

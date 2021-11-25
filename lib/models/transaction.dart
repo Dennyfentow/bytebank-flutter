@@ -16,7 +16,7 @@ class Transaction {
     return 'Transaction{value: $value, contact: $contact}';
   }
 
-  static List<Transaction> fromJSON(String body) {
+  static List<Transaction> fromListJSON(String body) {
     final List<dynamic> decodedJson = jsonDecode(body);
     final List<Transaction> transactions = [];
 
