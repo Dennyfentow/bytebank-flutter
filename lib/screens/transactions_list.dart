@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class TransactionsList extends StatelessWidget {
   final List<Transaction> transactions = [];
 
+  TransactionsList({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // transactions.add(Transaction(100.0, Contact(0, 'Alex', 1000)));
