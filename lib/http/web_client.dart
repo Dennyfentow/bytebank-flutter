@@ -29,9 +29,14 @@ Future<List<Transaction>> findAll() async {
   Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
   final Response response = await client
-      .get(Uri.parse('https://1820-170-82-181-76.ngrok.io/transactions'));
+      .get(Uri.parse('https://f293-170-82-181-76.ngrok.io/transactions'))
+      .timeout(const Duration(seconds: 5));
 
-  List<Transaction> transactions = Transaction.fromListJSON(response.body);
-  debugPrint(transactions.toString());
-  return transactions;
+  if (response.statusCode == 200) {
+    List<Transaction> transactions = Transaction.fromListJSON(response.body);
+    debugPrint(transactions.toString());
+    return transactions;
+  } else {
+    return [];
+  }
 }

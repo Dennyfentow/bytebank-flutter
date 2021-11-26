@@ -1,3 +1,4 @@
+import 'package:bytebank/components/centered_message.dart';
 import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/http/web_client.dart';
 import 'package:bytebank/models/transaction.dart';
@@ -24,7 +25,6 @@ class _TransactionsListState extends State<TransactionsList> {
       body: FutureBuilder<List<Transaction>>(
         future: findAll(),
         builder: (context, snapshot) {
-          final List<Transaction>? transactions = snapshot.data;
           switch (snapshot.connectionState) {
             case ConnectionState.none:
               break;
@@ -33,38 +33,45 @@ class _TransactionsListState extends State<TransactionsList> {
             case ConnectionState.active:
               break;
             case ConnectionState.done:
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final Transaction? transaction =
-                      transactions != null ? transactions[index] : null;
-                  // em caso de nulo
-                  if (transaction != null) {
-                    return Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.monetization_on),
-                        title: Text(
-                          transaction.value.toString(),
-                          style: const TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
+              final List<Transaction>? transactions = snapshot.data;
+              if (snapshot.hasData &&
+                  transactions != null &&
+                  transactions.isNotEmpty) {
+                return ListView.builder(
+                    itemBuilder: (context, index) {
+                      final Transaction? transaction = transactions[index];
+                      // em caso de nulo
+                      if (transaction != null) {
+                        return Card(
+                          child: ListTile(
+                            leading: const Icon(Icons.monetization_on),
+                            title: Text(
+                              transaction.value.toString(),
+                              style: const TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Text(
+                              transaction.contact.accountNumber.toString(),
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                            ),
                           ),
-                        ),
-                        subtitle: Text(
-                          transaction.contact.accountNumber.toString(),
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return const Text('Sem Valores');
-                  }
-                },
-                itemCount: transactions != null ? transactions.length : 0,
+                        );
+                      } else {
+                        return const CenteredMessage('Sem Valores');
+                      }
+                    },
+                    itemCount: transactions.length);
+              }
+              return const CenteredMessage(
+                'Not transactions found',
+                icon: Icons.warning,
               );
           }
-          return const Text('Unknow Error');
+          return const CenteredMessage('Unknow Error');
         },
       ),
     );
