@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "persistencia-flutter",
+            "name": "bytebank-flutter",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "persistencia-flutter (profile mode)",
+            "name": "bytebank-flutter (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"

@@ -30,7 +30,7 @@ class LoggingInterceptor implements InterceptorContract {
 
 Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
-const String baseUrl = 'https://f293-170-82-181-76.ngrok.io/transactions';
+const String baseUrl = 'https://09dc-170-82-181-76.ngrok.io/transactions';
 
 Future<List<Transaction>> findAll() async {
   final Response response =
