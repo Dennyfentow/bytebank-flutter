@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bytebank/components/centered_message.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/widgets.dart';
