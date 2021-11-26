@@ -1,13 +1,13 @@
 import 'package:bytebank/components/centered_message.dart';
 import 'package:bytebank/components/progress.dart';
-import 'package:bytebank/http/web_client.dart';
+import 'package:bytebank/http/web_clients/transaction_webclient.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsList extends StatefulWidget {
-  // final List<Transaction> transactions = [];
+  final TransactionWebClient _webClient = TransactionWebClient();
 
-  const TransactionsList({Key? key}) : super(key: key);
+  TransactionsList({Key? key}) : super(key: key);
 
   @override
   State<TransactionsList> createState() => _TransactionsListState();
@@ -23,7 +23,7 @@ class _TransactionsListState extends State<TransactionsList> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: FutureBuilder<List<Transaction>>(
-        future: findAll(),
+        future: widget._webClient.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
