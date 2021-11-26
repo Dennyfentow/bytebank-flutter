@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:bytebank/components/centered_message.dart';
+import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
@@ -25,12 +29,13 @@ class LoggingInterceptor implements InterceptorContract {
   }
 }
 
-Future<List<Transaction>> findAll() async {
-  Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
+Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
-  final Response response = await client
-      .get(Uri.parse('https://f293-170-82-181-76.ngrok.io/transactions'))
-      .timeout(const Duration(seconds: 5));
+const String baseUrl = 'https://f293-170-82-181-76.ngrok.io/transactions';
+
+Future<List<Transaction>> findAll() async {
+  final Response response =
+      await client.get(Uri.parse(baseUrl)).timeout(const Duration(seconds: 5));
 
   if (response.statusCode == 200) {
     List<Transaction> transactions = Transaction.fromListJSON(response.body);
@@ -38,5 +43,41 @@ Future<List<Transaction>> findAll() async {
     return transactions;
   } else {
     return [];
+  }
+}
+
+Future<Transaction?> saveTransaction(Transaction transaction) async {
+  final Map<String, dynamic> transactionMap = {
+    'value': transaction.value,
+    'contact': {
+      'name': transaction.contact.name,
+      'accountNumber': transaction.contact.accountNumber,
+    }
+  };
+
+  final String transactionJSON = jsonEncode(transactionMap);
+
+  final Response response = await client.post(Uri.parse(baseUrl),
+      headers: {
+        'Content-type': 'application/json',
+        'password': '1000',
+      },
+      body: transactionJSON);
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    var contactJSON = json['contact'];
+    final Transaction transaction = Transaction(
+      json['value'],
+      Contact(
+        0,
+        contactJSON['name'],
+        contactJSON['accountNumber'],
+      ),
+    );
+    return transaction;
+  } else {
+    return null;
   }
 }
