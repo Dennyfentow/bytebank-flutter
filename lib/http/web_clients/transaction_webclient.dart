@@ -20,13 +20,14 @@ class TransactionWebClient {
     }
   }
 
-  Future<Transaction?> saveTransaction(Transaction transaction) async {
+  Future<Transaction?> saveTransaction(
+      Transaction transaction, String password) async {
     String transactionJSON = jsonEncode(transaction.toJson());
 
     final Response response = await client.post(Uri.parse(baseUrl),
         headers: {
           'Content-type': 'application/json',
-          'password': '1000',
+          'password': password,
         },
         body: transactionJSON);
     if (response.statusCode == 200) {
