@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:bytebank/http/web_client.dart';
-import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class TransactionWebClient {
@@ -21,13 +19,17 @@ class TransactionWebClient {
   }
 
   List<Transaction> _toTransactions(Response response) {
-    List<Transaction> transactions = Transaction.fromListJSON(response.body);
-    debugPrint(transactions.toString());
+    final List<dynamic> decodedJson = jsonDecode(response.body);
+    List<Transaction> transactions = [];
+
+    for (Map<String, dynamic> transactionJson in decodedJson) {
+      transactions.add(Transaction.fromJson(transactionJson));
+    }
     return transactions;
   }
 
   Future<Transaction?> saveTransaction(Transaction transaction) async {
-    String transactionJSON = toMap(transaction);
+    String transactionJSON = jsonEncode(transaction.toJson());
 
     final Response response = await client.post(Uri.parse(baseUrl),
         headers: {
@@ -36,23 +38,13 @@ class TransactionWebClient {
         },
         body: transactionJSON);
 
-    return toTransaction(response);
+    return _toTransaction(response);
   }
 
-  Transaction? toTransaction(Response response) {
+  Transaction? _toTransaction(Response response) {
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
-
-      final contactJSON = json['contact'];
-      final Transaction transaction = Transaction(
-        json['value'],
-        Contact(
-          0,
-          contactJSON['name'],
-          contactJSON['accountNumber'],
-        ),
-      );
-      return transaction;
+      return Transaction.fromJson(json);
     } else {
       return null;
     }
