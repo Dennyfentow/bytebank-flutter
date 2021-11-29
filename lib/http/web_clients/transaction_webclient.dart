@@ -11,21 +11,13 @@ class TransactionWebClient {
         .timeout(const Duration(seconds: 5));
 
     if (response.statusCode == 200) {
-      List<Transaction> transactions = _toTransactions(response);
-      return transactions;
+      final List<dynamic> decodedJson = jsonDecode(response.body);
+      return decodedJson
+          .map((dynamic jsonObject) => Transaction.fromJson(jsonObject))
+          .toList();
     } else {
       return [];
     }
-  }
-
-  List<Transaction> _toTransactions(Response response) {
-    final List<dynamic> decodedJson = jsonDecode(response.body);
-    List<Transaction> transactions = [];
-
-    for (Map<String, dynamic> transactionJson in decodedJson) {
-      transactions.add(Transaction.fromJson(transactionJson));
-    }
-    return transactions;
   }
 
   Future<Transaction?> saveTransaction(Transaction transaction) async {
@@ -37,14 +29,8 @@ class TransactionWebClient {
           'password': '1000',
         },
         body: transactionJSON);
-
-    return _toTransaction(response);
-  }
-
-  Transaction? _toTransaction(Response response) {
     if (response.statusCode == 200) {
-      Map<String, dynamic> json = jsonDecode(response.body);
-      return Transaction.fromJson(json);
+      return Transaction.fromJson(jsonDecode(response.body));
     } else {
       return null;
     }
