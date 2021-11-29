@@ -4,4 +4,4 @@ import 'package:http_interceptor/http_interceptor.dart';
 
 Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
-const String baseUrl = 'https://7db5-170-82-181-76.ngrok.io/transactions';
+const String baseUrl = 'https://fb35-170-82-181-76.ngrok.io/transactions';

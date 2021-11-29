@@ -22,36 +22,39 @@ class ResponseDialog extends StatelessWidget {
         child: Text(title),
         visible: title.isNotEmpty,
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Visibility(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Icon(
-                icon,
-                size: 64,
-                color: colorIcon,
-              ),
-            ),
-            visible: icon != null,
-          ),
-          Visibility(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Text(
-                message,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 24.0,
+      content: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Visibility(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Icon(
+                  icon,
+                  size: 64,
+                  color: colorIcon,
                 ),
               ),
+              visible: icon != null,
             ),
-            visible: message.isNotEmpty,
-          )
-        ],
+            Visibility(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                  ),
+                ),
+              ),
+              visible: message.isNotEmpty,
+            )
+          ],
+        ),
       ),
       actions: <Widget>[
         TextButton(

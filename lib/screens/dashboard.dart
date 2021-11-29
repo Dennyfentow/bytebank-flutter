@@ -13,33 +13,36 @@ class Dashboard extends StatelessWidget {
         title: const Text('Dashboard'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('images/bytebank_logo.png'),
-          ),
-          SizedBox(
-            height: 120,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                _FeatureItem(
-                  'Transfer',
-                  Icons.monetization_on,
-                  onClick: () => _showContactsList(context),
-                ),
-                _FeatureItem(
-                  'Transaction Feed',
-                  Icons.description,
-                  onClick: () => _showTransactionsList(context),
-                ),
-              ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset('images/bytebank_logo.png'),
             ),
-          ),
-        ],
+            SizedBox(
+              height: 120,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  _FeatureItem(
+                    'Transfer',
+                    Icons.monetization_on,
+                    onClick: () => _showContactsList(context),
+                  ),
+                  _FeatureItem(
+                    'Transaction Feed',
+                    Icons.description,
+                    onClick: () => _showTransactionsList(context),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
