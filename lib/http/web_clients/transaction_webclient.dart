@@ -6,9 +6,7 @@ import 'package:http/http.dart';
 
 class TransactionWebClient {
   Future<List<Transaction>> findAll() async {
-    final Response response = await client
-        .get(Uri.parse(baseUrl))
-        .timeout(const Duration(seconds: 5));
+    final Response response = await client.get(Uri.parse(baseUrl));
 
     if (response.statusCode == 200) {
       final List<dynamic> decodedJson = jsonDecode(response.body);
@@ -35,11 +33,9 @@ class TransactionWebClient {
       return Transaction.fromJson(jsonDecode(response.body));
     }
 
-    throw throwHttpError(response.statusCode);
+    throw HttpException(
+        _statusCodeResponses[response.statusCode] ?? 'Http Unknown Error');
   }
-
-  Exception throwHttpError(int statusCode) =>
-      Exception(_statusCodeResponses[statusCode]);
 
   String toMap(Transaction transaction) {
     final Map<String, dynamic> transactionMap = {
@@ -58,4 +54,10 @@ class TransactionWebClient {
     400: 'there was an error submitting transaction',
     401: 'authentication failed'
   };
+}
+
+class HttpException implements Exception {
+  final String message;
+
+  HttpException(this.message);
 }
