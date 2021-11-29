@@ -90,27 +90,52 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
-    Transaction? transaction = await _webClient
-        .saveTransaction(transactionCreated, password)
-        .catchError((e) {
-      showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return FailureDialog(e.message ?? 'Unknow Error');
-          });
-    }, test: (e) => e is HttpException).catchError((e) {
-      showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return FailureDialog('timeout submitting the transaction');
-          });
-    }, test: (e) => e is TimeoutException);
+    Transaction? transaction = await _send(
+      transactionCreated,
+      password,
+      context,
+    );
 
+    // sem await pq é o últimos
+    _showSuccessfulMessage(transaction, context);
+  }
+
+  Future<void> _showSuccessfulMessage(
+      Transaction? transaction, BuildContext context) async {
     if (transaction != null) {
       await showDialog(
           context: context,
           builder: (contextDialog) => SuccessDialog('successful transaction'));
       Navigator.pop(context);
     }
+  }
+
+  Future<Transaction?> _send(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    Transaction? transaction = await _webClient
+        .saveTransaction(transactionCreated, password)
+        .catchError((e) {
+      _showFailureMessage(context, message: e.message ?? 'Unknow Error');
+    }, test: (e) => e is HttpException).catchError((e) {
+      _showFailureMessage(context,
+          message: 'timeout submitting the transaction');
+      showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return FailureDialog('timeout submitting the transaction');
+          });
+    }, test: (e) => e is TimeoutException).catchError((e) {
+      _showFailureMessage(context);
+    });
+    return transaction;
+  }
+
+  void _showFailureMessage(BuildContext context,
+      {String message = 'Unknown error'}) {
+    showDialog(
+        context: context,
+        builder: (contextDialog) {
+          return FailureDialog(message);
+        });
   }
 }
