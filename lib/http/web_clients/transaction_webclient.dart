@@ -22,6 +22,8 @@ class TransactionWebClient {
       Transaction transaction, String password) async {
     String transactionJSON = jsonEncode(transaction.toJson());
 
+    await Future.delayed(const Duration(seconds: 10));
+
     final Response response = await client.post(Uri.parse(baseUrl),
         headers: {
           'Content-type': 'application/json',
