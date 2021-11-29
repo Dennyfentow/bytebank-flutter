@@ -1,3 +1,4 @@
+import 'package:bytebank/components/response_dialog.dart';
 import 'package:bytebank/components/transaction_auth_dialog.dart';
 import 'package:bytebank/http/web_clients/transaction_webclient.dart';
 import 'package:bytebank/models/contact.dart';
@@ -65,18 +66,15 @@ class _TransactionFormState extends State<TransactionForm> {
                     onPressed: () {
                       final double? value =
                           double.tryParse(_valueController.text);
-                      if (value != null) {
-                        final transactionCreated =
-                            Transaction(value, widget.contact);
-                        showDialog(
-                            context: context,
-                            builder: (contextDialog) => TransactionAuthDialog(
-                                  onConfirm: (String password) {
-                                    _save(
-                                        transactionCreated, password, context);
-                                  },
-                                ));
-                      }
+                      final transactionCreated =
+                          Transaction(value, widget.contact);
+                      showDialog(
+                          context: context,
+                          builder: (contextDialog) => TransactionAuthDialog(
+                                onConfirm: (String password) {
+                                  _save(transactionCreated, password, context);
+                                },
+                              ));
                     },
                   ),
                 ),
@@ -95,10 +93,18 @@ class _TransactionFormState extends State<TransactionForm> {
         .saveTransaction(transactionCreated, password)
         .then((transaction) {
       if (transaction != null) {
-        Navigator.pop(context);
+        showDialog(
+                context: context,
+                builder: (contextDialog) =>
+                    SuccessDialog('successful transaction'))
+            .then((value) => Navigator.pop(context));
       }
     }).catchError((e) {
-      print('there war an error $e');
-    });
+      showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return FailureDialog(e.message);
+          });
+    }, test: (e) => e is Exception);
   }
 }

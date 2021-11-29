@@ -32,7 +32,7 @@ class TransactionWebClient {
         body: transactionJSON);
 
     if (response.statusCode == 400) {
-      throw Exception('There was an error submitting transaction');
+      throw Exception('there was an error submitting transaction');
     }
 
     if (response.statusCode == 401) {
