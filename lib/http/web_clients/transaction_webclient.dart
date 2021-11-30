@@ -22,7 +22,7 @@ class TransactionWebClient {
       Transaction transaction, String password) async {
     String transactionJSON = jsonEncode(transaction.toJson());
 
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 2));
 
     final Response response = await client.post(Uri.parse(baseUrl),
         headers: {

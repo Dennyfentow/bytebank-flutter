@@ -22,6 +22,7 @@ class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final TransactionWebClient _webClient = TransactionWebClient();
   final String transactionId = const Uuid().v4();
+  bool _sending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +37,14 @@ class _TransactionFormState extends State<TransactionForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Visibility(
-                child: Padding(
+              Visibility(
+                child: const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Progress(
                     message: 'Sending...',
                   ),
                 ),
-                visible: true,
+                visible: _sending,
               ),
               Text(
                 widget.contact.name,
@@ -124,6 +125,10 @@ class _TransactionFormState extends State<TransactionForm> {
 
   Future<Transaction?> _send(Transaction transactionCreated, String password,
       BuildContext context) async {
+    // exibir o progress após clicar em confirmar no dialog
+    setState(() {
+      _sending = true;
+    });
     Transaction? transaction = await _webClient
         .saveTransaction(transactionCreated, password)
         .catchError((e) {
@@ -138,7 +143,13 @@ class _TransactionFormState extends State<TransactionForm> {
           });
     }, test: (e) => e is TimeoutException).catchError((e) {
       _showFailureMessage(context);
-    });
+    }).whenComplete(() => {
+              // ocultar após o transaction ser enviado
+              setState(() {
+                _sending = false;
+              })
+            });
+
     return transaction;
   }
 
