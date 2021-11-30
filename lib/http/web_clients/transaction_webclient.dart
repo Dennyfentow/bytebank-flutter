@@ -35,9 +35,11 @@ class TransactionWebClient {
       return Transaction.fromJson(jsonDecode(response.body));
     }
 
-    throw HttpException(
-        _statusCodeResponses[response.statusCode] ?? 'Http Unknown Error');
+    throw HttpException(_getMessage(response.statusCode));
   }
+
+  String _getMessage(int statusCode) =>
+      _statusCodeResponses[statusCode] ?? 'Http Unknown Error';
 
   String toMap(Transaction transaction) {
     final Map<String, dynamic> transactionMap = {
@@ -54,7 +56,8 @@ class TransactionWebClient {
 
   static final Map<int, String> _statusCodeResponses = {
     400: 'there was an error submitting transaction',
-    401: 'authentication failed'
+    401: 'authentication failed',
+    409: 'transaction always exists'
   };
 }
 

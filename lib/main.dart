@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
-  // saveTransaction(Transaction(
-  //   200.0,
-  //   Contact(0, 'GUI', 2000),
-  // )).then((transaction) => debugPrint('$transaction'));
 }
 
 class MyApp extends StatelessWidget {

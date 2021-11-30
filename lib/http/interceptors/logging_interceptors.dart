@@ -7,7 +7,7 @@ class LoggingInterceptor implements InterceptorContract {
     debugPrint('Request');
     debugPrint('url: ${data.url}');
     debugPrint('headers: ${data.headers}');
-    // debugPrint('body: ${data.body}');
+    debugPrint('body: ${data.body}');
     return data;
   }
 
